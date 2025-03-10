@@ -8,7 +8,7 @@ contract TruePassNFT is ERC721Enumerable, Ownable {
     uint256 public nextTokenId;
     string private baseTokenURI;
     bytes32 public integrityHash;
-    bool public contractDisabled; // ✅ Prevents contract use after termination
+    bool public contractDisabled; //Prevent contract use after termination
 
     event TicketMinted(address indexed owner, uint256 tokenId);
     event ContractTerminated();
@@ -53,6 +53,6 @@ contract TruePassNFT is ERC721Enumerable, Ownable {
     }
 
     function _baseURI() internal view override returns (string memory) {
-        return baseTokenURI; // ✅ Updated to match the renamed variable
+        return baseTokenURI; //Updated to match the renamed variable
     }
 }

@@ -650,8 +650,8 @@
       ]
     },
     "D:\\repos\\TruePass---Decentralized-Ticketing-System\\blockchain\\contracts\\TruePassNFT.sol": {
-      "lastModificationDate": 1741640496479,
-      "contentHash": "8a3f085df035722e06d11871798c56ee",
+      "lastModificationDate": 1741642110833,
+      "contentHash": "aac1f0132fabfd3bf4c36126e9af1757",
       "sourceName": "contracts/TruePassNFT.sol",
       "solcConfig": {
         "version": "0.8.20",

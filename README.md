@@ -44,3 +44,12 @@ File Structure:
 │── README.md               # Project overview
 │── package.json            # Root dependencies (if using workspaces)
 └── docker-compose.yml       # Docker for multi-container deployment
+
+
+
+Smart Contract deployment:
+1.cd blockchain
+2.npx hardhat compile
+3.npx hardhat run scripts/deploy.js --network sepolia
+(storage in pinata : )
+
