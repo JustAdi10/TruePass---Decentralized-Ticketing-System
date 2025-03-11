@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Event - EventHub</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        :root {
+            --primary-color: #4da3ff;
+            --secondary-color: #8762ff;
+            --accent-color: #ff3a8c;
+            --success-color: #4cd471;
+            --warning-color: #ffc937;
+            --dark-color: #121b2f;
+            --darker-color: #0a1121;
+            --light-color: #e4e9f7;
+            --gray-color: #8b96a8;
+            --card-bg: #1a2940;
+            --header-bg: #0f172a;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            --border-radius: 8px;
+            --transition: all 0.3s ease;
+        }
+        body {
+            background-color: var(--dark-color);
+            color: var(--light-color);
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        header {
+            background-color: var(--header-bg);
+            box-shadow: var(--box-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .navbar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px 0;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        .logo span {
+            color: var(--accent-color);
+        }
+      
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: var(--light-color);
+            padding: 10px 20px;
+            border-radius: var(--border-radius);
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+        .btn:hover {
+            background-color: #3a8eee;
+            transform: translateY(-2px);
+        }
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: var(--light-color);
+        }
+        .btn-accent {
+            background-color: var(--accent-color);
+        }
+        .btn-accent:hover {
+            background-color: #ff2176;
+        }
+        .btn-success {
+            background-color: var(--success-color);
+        }
+        .btn-success:hover {
+            background-color: #3bbe5f;
+        }
+
+        /* Form Styles */
+        .form-container {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 40px;
+            margin: 40px 0;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .form-title {
+            font-size: 24px;
+            margin-bottom: 30px;
+            color: var(--light-color);
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--light-color);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #2d3b54;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            transition: var(--transition);
+            background-color: var(--darker-color);
+            color: var(--light-color);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(77, 163, 255, 0.2);
+        }
+
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238b96a8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1em;
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+
+        .form-hint {
+            margin-top: 5px;
+            font-size: 14px;
+            color: var(--gray-color);
+        }
+
+        .form-note {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #2d3b54;
+            font-size: 14px;
+            color: var(--gray-color);
+            text-align: center;
+        }
+
+        footer {
+            background-color: var(--header-bg);
+            padding: 40px 0;
+            margin-top: 60px;
+            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            color: var(--gray-color);
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .form-actions .btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">True<span>Pass</span></div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="form-container">
+            <h2 class="form-title">Add New Event</h2>
+            
+            <form id="addEventForm">
+                <div class="form-group">
+                    <label for="eventTitle" class="form-label">Event Title</label>
+                    <input type="text" id="eventTitle" name="eventTitle" class="form-control" placeholder="Enter event title" required>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="eventCategory" class="form-label">Category</label>
+                        <select id="eventCategory" name="eventCategory" class="form-control" required>
+                            <option value="">Select a category</option>
+                            <option value="concerts">Concerts and Music Events</option>
+                            <option value="sports">Sports & Games</option>
+                            <option value="party">Parties and Nightlife</option>
+                            
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="eventCapacity" class="form-label">Capacity</label>
+                        <input type="number" id="eventCapacity" name="eventCapacity" class="form-control" placeholder="Number of attendees" min="1" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="eventDate" class="form-label">Date</label>
+                        <input type="date" id="eventDate" name="eventDate" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="eventTime" class="form-label">Time</label>
+                        <input type="time" id="eventTime" name="eventTime" class="form-control" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="eventLocation" class="form-label">Location</label>
+                    <input type="text" id="eventLocation" name="eventLocation" class="form-control" placeholder="Enter event location" required>
+                    <div class="form-hint">Physical address or virtual meeting link</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="eventDescription" class="form-label">Description</label>
+                    <textarea id="eventDescription" name="eventDescription" class="form-control" placeholder="Describe your event" required></textarea>
+                </div>
+                
+                <div class="form-actions">
+                    <a href="index.html" class="btn btn-outline">Cancel</a>
+                    <div>
+                        <button type="button" class="btn btn-outline" style="margin-right: 10px;" id="saveAsDraft">Save as Draft</button>
+                        <button type="submit" class="btn btn-success">Publish Event</button>
+                    </div>
+                </div>
+                
+                <div class="form-note">
+                    <p>Events will be reviewed for compliance with our community guidelines before being published.</p>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="copyright">
+                &copy; 2025 TruePass. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const addEventForm = document.getElementById('addEventForm');
+            const saveAsDraftBtn = document.getElementById('saveAsDraft');
+            
+            // Set default date to today
+            const today = new Date();
+            const formattedDate = today.toISOString().split('T')[0];
+            document.getElementById('eventDate').value = formattedDate;
+            
+            // Handle form submission
+            addEventForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Collect form data
+                const formData = new FormData(addEventForm);
+                const eventData = {
+                    title: formData.get('eventTitle'),
+                    category: formData.get('eventCategory'),
+                    capacity: formData.get('eventCapacity'),
+                    date: `${formData.get('eventDate')}T${formData.get('eventTime')}`,
+                    location: formData.get('eventLocation'),
+                    description: formData.get('eventDescription'),
+                    status: 'upcoming',
+                    image: "/api/placeholder/400/300" // Placeholder for now
+                };
+                
+                // Save to localStorage for demo purposes
+                const events = JSON.parse(localStorage.getItem('eventHubEvents') || '[]');
+                eventData.id = events.length > 0 ? Math.max(...events.map(e => e.id)) + 1 : 1;
+                events.push(eventData);
+                localStorage.setItem('eventHubEvents', JSON.stringify(events));
+                
+                // Redirect back to main page
+                alert('Event published successfully!');
+                window.location.href = 'index.html';
+            });
+            
+            // Handle "Save as Draft" button
+            saveAsDraftBtn.addEventListener('click', function() {
+                // Similar to above but with draft status
+                const formData = new FormData(addEventForm);
+                const eventData = {
+                    title: formData.get('eventTitle') || 'Untitled Event',
+                    category: formData.get('eventCategory') || 'other',
+                    capacity: formData.get('eventCapacity') || 0,
+                    date: formData.get('eventDate') ? `${formData.get('eventDate')}T${formData.get('eventTime') || '00:00'}` : new Date().toISOString(),
+                    location: formData.get('eventLocation') || 'TBD',
+                    description: formData.get('eventDescription') || 'No description provided.',
+                    status: 'draft',
+                    image: "/api/placeholder/400/300" // Placeholder for now
+                };
+                
+                // Save to localStorage for demo purposes
+                const events = JSON.parse(localStorage.getItem('eventHubEvents') || '[]');
+                eventData.id = events.length > 0 ? Math.max(...events.map(e => e.id)) + 1 : 1;
+                events.push(eventData);
+                localStorage.setItem('eventHubEvents', JSON.stringify(events));
+                
+                // Redirect back to main page
+                alert('Event saved as draft!');
+                window.location.href = 'index.html';
+            });
+        });
+    </script>
+</body>
+</html>

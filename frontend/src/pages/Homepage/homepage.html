@@ -1,0 +1,2023 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NFT Event Marketplace</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            background-color: #0c0c1d;
+            background-image: linear-gradient(to bottom right, #0c0c1d, #1a1a3a);
+            color: white;
+            min-height: 100vh;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 30px;
+            border-bottom: 1px solid #222236;
+            backdrop-filter: blur(5px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background-color: rgba(12, 12, 29, 0.8);
+            flex-wrap: nowrap;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            flex-shrink: 0;
+            /* Prevent shrinking */
+        }
+
+        /* Add these adjustments */
+        .logo {
+            display: inline-flex;
+            /* Change from flex to inline-flex */
+            align-items: center;
+            gap: 10px;
+            font-size: 22px;
+            font-weight: bold;
+            margin-right: 0;
+            white-space: nowrap;
+        }
+
+        .logo-section a {
+            display: inline-flex;
+            margin-left: 15px;
+            /* Negative margin to collapse spacing */
+
+        }
+
+        .btn-primary {
+            padding: 10px 15px;
+            border-radius: 0 12px 12px 0;
+            /* Match logo's right side */
+            border-left: 1px solid rgba(255, 255, 255, 0.2);
+            /* Visual connection */
+            transform: translateX(-8px);
+            /* Pull button left */
+        }
+
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #2081e2;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            box-shadow: 0 0 15px rgba(32, 129, 226, 0.5);
+            border-radius: 12px 0 0 12px;
+        }
+
+        .search-bar {
+            flex: 1;
+            max-width: 800px;
+            margin: 0 20px;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 12px 20px;
+            padding-left: 45px;
+            border-radius: 12px;
+            border: none;
+            background-color: #1b1b2e;
+            color: white;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px #2081e2;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #8a8a9b;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-primary {
+            background-color: #2081e2;
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #1371cc;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid #2081e2;
+            color: #2081e2;
+        }
+
+        .btn-outline:hover {
+            background-color: rgba(32, 129, 226, 0.1);
+        }
+
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #1b1b2e;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .icon-btn:hover {
+            background-color: #2a2a45;
+            transform: translateY(-2px);
+        }
+
+        .categories {
+            display: flex;
+            gap: 15px;
+            padding: 20px 30px;
+            overflow-x: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #2081e2 #1b1b2e;
+        }
+
+        .categories::-webkit-scrollbar {
+            height: 5px;
+        }
+
+        .categories::-webkit-scrollbar-track {
+            background: #1b1b2e;
+            border-radius: 10px;
+        }
+
+        .categories::-webkit-scrollbar-thumb {
+            background-color: #2081e2;
+            border-radius: 10px;
+        }
+
+        .category {
+            padding: 10px 20px;
+            background-color: #1b1b2e;
+            border-radius: 20px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+        }
+
+        .category:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .category.active {
+            background-color: #2081e2;
+            box-shadow: 0 0 15px rgba(32, 129, 226, 0.3);
+        }
+
+        .collections-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+            padding: 20px 30px;
+        }
+
+        .collection-card {
+            border-radius: 16px;
+            overflow: hidden;
+            background-color: #1b1b2e;
+            transition: all 0.3s;
+            border: 1px solid transparent;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .collection-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px rgba(32, 129, 226, 0.2);
+            border-color: rgba(32, 129, 226, 0.3);
+        }
+
+        .collection-card:hover .collection-image {
+            transform: scale(1.05);
+        }
+
+        .collection-image {
+            height: 250px;
+            width: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .collection-info {
+            padding: 18px;
+        }
+
+        .collection-name {
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .collection-price {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            color: #8a8a9b;
+            font-size: 14px;
+        }
+
+        .price-value {
+            color: white;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 30px 20px;
+            font-size: 24px;
+            font-weight: bold;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 10px;
+            left: 30px;
+            width: 50px;
+            height: 3px;
+            background-color: #2081e2;
+            border-radius: 3px;
+        }
+
+        .view-all {
+            font-size: 16px;
+            color: #2081e2;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .view-all:hover {
+            color: #1371cc;
+            text-decoration: underline;
+        }
+
+        .trending-section {
+            padding: 20px 30px;
+            background-color: rgba(27, 27, 46, 0.5);
+            margin: 20px 30px;
+            border-radius: 16px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .trend-tabs {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .trend-tab {
+            cursor: pointer;
+            font-size: 18px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .trend-tab.active {
+            color: white;
+            border-color: #2081e2;
+        }
+
+        .trend-tab:not(.active) {
+            color: #8a8a9b;
+        }
+
+        .trend-tab:hover:not(.active) {
+            color: #bbbbc3;
+        }
+
+        .time-filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .time-filter {
+            padding: 5px 15px;
+            border-radius: 15px;
+            background-color: #1b1b2e;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .time-filter:hover:not(.active) {
+            background-color: #2a2a45;
+        }
+
+        .time-filter.active {
+            background-color: #2081e2;
+            box-shadow: 0 0 10px rgba(32, 129, 226, 0.3);
+        }
+
+        .trending-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .trending-table th,
+        .trending-table td {
+            padding: 15px 10px;
+            text-align: left;
+        }
+
+        .trending-table th {
+            color: #8a8a9b;
+            font-weight: normal;
+        }
+
+        .trending-table tr {
+            border-bottom: 1px solid #222236;
+            transition: background-color 0.3s;
+        }
+
+        .trending-table tr:hover {
+            background-color: #22223a;
+        }
+
+        .collection-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .collection-row img {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .collection-row:hover img {
+            transform: scale(1.1);
+        }
+
+        .trending-number {
+            font-weight: bold;
+            width: 30px;
+        }
+
+        .section-header {
+            text-align: center;
+            padding: 40px 0 20px;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .section-header h2 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #2081e2, #8354e6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        .section-header p {
+            color: #8a8a9b;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .section-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(to right, #2081e2, #8354e6);
+            border-radius: 3px;
+        }
+
+        .concert-section {
+            background: linear-gradient(rgba(12, 12, 29, 0.9), rgba(12, 12, 29, 0.9)), url('/api/placeholder/1920/1080');
+            background-size: cover;
+            background-position: center;
+            padding: 20px 0;
+            background-attachment: fixed;
+        }
+
+        .sports-section {
+            background: linear-gradient(rgba(12, 12, 29, 0.9), rgba(12, 12, 29, 0.9)), url('/api/placeholder/1920/1080');
+            background-size: cover;
+            background-position: center;
+            padding: 20px 0;
+            background-attachment: fixed;
+        }
+
+        .parties-section {
+            background: linear-gradient(rgba(12, 12, 29, 0.9), rgba(12, 12, 29, 0.9)), url('/api/placeholder/1920/1080');
+            background-size: cover;
+            background-position: center;
+            padding: 20px 0;
+            background-attachment: fixed;
+        }
+
+        .badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #2081e2;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: bold;
+            z-index: 1;
+        }
+
+        .live-badge {
+            background-color: #f34747;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .pulse {
+            width: 8px;
+            height: 8px;
+            background-color: white;
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(0.8);
+                opacity: 0.8;
+            }
+
+            50% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(0.8);
+                opacity: 0.8;
+            }
+        }
+
+        .footer {
+            margin-top: 50px;
+            background-color: #0a0a18;
+            padding: 30px;
+            text-align: center;
+            border-top: 1px solid #222236;
+        }
+
+        .footer-logo {
+            margin-bottom: 20px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer-link {
+            color: #8a8a9b;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-link:hover {
+            color: #2081e2;
+        }
+
+        .footer-copyright {
+            color: #8a8a9b;
+            font-size: 14px;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            overflow: auto;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .modal-content {
+            background-color: #1b1b2e;
+            margin: 50px auto;
+            width: 90%;
+            max-width: 800px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.3s;
+            overflow: hidden;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #222236;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .modal-close {
+            font-size: 28px;
+            cursor: pointer;
+            color: #8a8a9b;
+            transition: color 0.3s;
+        }
+
+        .modal-close:hover {
+            color: white;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .event-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .detail-group {
+            margin-bottom: 15px;
+        }
+
+        .detail-label {
+            color: #8a8a9b;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .modal-actions {
+            padding: 20px;
+            border-top: 1px solid #222236;
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #2081e2;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        /* Newsletter section */
+        .newsletter-section {
+            background-color: rgba(27, 27, 46, 0.5);
+            margin: 40px 30px;
+            padding: 40px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .newsletter-title {
+            font-size: 28px;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #2081e2, #8354e6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        .newsletter-form {
+            display: flex;
+            max-width: 600px;
+            margin: 30px auto 0;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            padding: 14px 20px;
+            border-radius: 12px 0 0 12px;
+            border: none;
+            background-color: #1b1b2e;
+            color: white;
+            font-size: 16px;
+        }
+
+        .newsletter-form input:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px #2081e2;
+        }
+
+        .newsletter-form button {
+            padding: 0 25px;
+            border-radius: 0 12px 12px 0;
+            background-color: #2081e2;
+            color: white;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .newsletter-form button:hover {
+            background-color: #1371cc;
+        }
+
+        /* Animations */
+        .fade-in {
+            animation: fadeIn 1s;
+        }
+
+        .slide-up {
+            animation: slideUp 0.8s;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Carousel */
+        .carousel {
+            position: relative;
+            margin: 30px 0;
+        }
+
+        .carousel-container {
+            overflow: hidden;
+        }
+
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .carousel-item {
+            flex: 0 0 100%;
+            padding: 0 10px;
+        }
+
+        .carousel-nav {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .carousel-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #1b1b2e;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .carousel-indicator.active {
+            background-color: #2081e2;
+        }
+
+        .carousel-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            background-color: rgba(32, 129, 226, 0.8);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s;
+        }
+
+        .carousel-arrow:hover {
+            background-color: #2081e2;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .carousel-arrow.prev {
+            left: 10px;
+        }
+
+        .carousel-arrow.next {
+            right: 10px;
+        }
+
+        /* Countdown timer */
+        .countdown {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .countdown-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .countdown-value {
+            font-size: 22px;
+            font-weight: bold;
+            background-color: #1b1b2e;
+            padding: 10px 15px;
+            border-radius: 10px;
+            min-width: 60px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .countdown-label {
+            font-size: 12px;
+            color: #8a8a9b;
+            margin-top: 5px;
+        }
+
+        /* Wallet connect modal */
+        .wallet-options {
+            display: flex;
+            /* Changed from grid to flex */
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .wallet-option {
+            background-color: #22223a;
+            border-radius: 12px;
+            padding: 10px;
+            /* Reduced padding from 15px */
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            /* Reduced gap from 10px */
+            cursor: pointer;
+            transition: all 0.3s;
+            max-width: 200px;
+            /* Added max-width to constrain the box */
+            margin: 0 auto;
+            /* Center the box */
+        }
+
+        .modal-content {
+            max-width: 400px;
+            /* Reduced from 800px */
+        }
+
+        .wallet-option:hover {
+            background-color: #2a2a45;
+            transform: translateY(-2px);
+        }
+
+        .wallet-icon {
+            width: 30px;
+            /* Reduced from 40px */
+            height: 30px;
+            /* Reduced from 40px */
+            object-fit: contain;
+        }
+
+        .wallet-name {
+            font-weight: bold;
+        }
+
+        /* Loading spinner */
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(32, 129, 226, 0.3);
+            border-top: 4px solid #2081e2;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Hero section */
+        .hero-section {
+            position: relative;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('/api/placeholder/1920/1080') center/cover no-repeat;
+            filter: brightness(0.4) blur(5px);
+            z-index: -1;
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 800px;
+            padding: 0 20px;
+            z-index: 1;
+        }
+
+        .hero-title {
+            font-size: 42px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .hero-subtitle {
+            font-size: 18px;
+            margin-bottom: 30px;
+            color: #bbbbc3;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Mobile styles */
+        @media (max-width: 768px) {
+            .search-bar {
+                display: none;
+            }
+
+            .collections-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 15px;
+                padding: 15px;
+            }
+
+            .section-title {
+                padding: 20px 15px 10px;
+                font-size: 20px;
+            }
+
+            .section-title::after {
+                left: 15px;
+            }
+
+            .trending-section {
+                margin: 15px;
+                padding: 15px;
+            }
+
+            .section-header h2 {
+                font-size: 24px;
+            }
+
+            .header {
+                padding: 15px;
+            }
+
+            .trending-table th:nth-child(4),
+            .trending-table td:nth-child(4) {
+                display: none;
+            }
+
+            .btn-primary {
+                font-size: 14px;
+                padding: 8px 15px;
+            }
+
+            .hero-title {
+                font-size: 32px;
+            }
+
+            .hero-section {
+                height: 400px;
+            }
+
+            .event-details {
+                grid-template-columns: 1fr;
+            }
+
+            .wallet-options {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .action-buttons .btn-primary span {
+                display: none;
+            }
+
+            .action-buttons .btn-primary::before {
+                content: '💼';
+            }
+
+            .logo-section .btn-primary {
+                display: none;
+            }
+
+            .collections-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .trending-table th:nth-child(3),
+            .trending-table td:nth-child(3) {
+                display: none;
+            }
+
+            .category {
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+
+            .hero-title {
+                font-size: 28px;
+            }
+
+            .hero-subtitle {
+                font-size: 16px;
+            }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@metamask/detect-provider"></script>
+</head>
+
+<body>
+    <header>
+        <div class="logo-section">
+            <div class="logo">
+                <div class="logo-icon">🎟️</div>
+                TruePass
+            </div>
+            <a href="../OrganiserDashboard/index.html" style="text-decoration: none;">
+                <div class="btn btn-primary">
+                    <span>Host</span>
+                </div>
+            </a>
+        </div>
+
+        <div class="search-bar">
+            <span class="search-icon">🔍</span>
+            <input type="text" placeholder="Search events, collections, and accounts" id="searchInput">
+        </div>
+        <!-- Add this search functionality script -->
+        <script>
+            
+            async function connectMetaMask() {
+            const provider = await detectEthereumProvider();
+
+            if (provider) {
+                console.log('MetaMask is installed!');
+                try {
+                    // Request account access if needed
+                    const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+                    const account = accounts[0];
+                    console.log('Connected account:', account);
+                    // Display connected account
+                    document.getElementById('walletAddress').textContent = `Connected: ${account}`;
+                } catch (error) {
+                    console.error('User rejected the request.');
+                }
+            } else {
+                console.error('Please install MetaMask!');
+            }
+
+            // Search functionality with revert capability
+            document.querySelector('.search-bar input').addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    performSearch(this.value);
+                }
+            });
+
+            document.querySelector('.search-icon').addEventListener('click', function () {
+                const searchValue = document.querySelector('.search-bar input').value;
+                performSearch(searchValue);
+            });
+
+            document.querySelector('.search-bar input').addEventListener('input', function (e) {
+                if (this.value === '') {
+                    revertSearch();
+                }
+            });
+
+            function performSearch(query) {
+                const searchTerm = query.toLowerCase().trim();
+
+                if (!searchTerm) {
+                    revertSearch();
+                    return;
+                }
+
+                const eventCards = document.querySelectorAll('.collection-card');
+
+                eventCards.forEach(card => {
+                    const title = card.querySelector('.collection-name').textContent.toLowerCase();
+                    const description = card.querySelector('.collection-info div:not(.collection-price)').textContent.toLowerCase();
+
+                    if (title.includes(searchTerm) || description.includes(searchTerm)) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                // Show section titles if any results found
+                document.querySelectorAll('[class$="-section"]').forEach(section => {
+                    const hasVisibleCards = Array.from(section.querySelectorAll('.collection-card'))
+                        .some(card => card.style.display !== 'none');
+
+                    section.style.display = hasVisibleCards ? 'block' : 'none';
+                });
+            }
+
+            function revertSearch() {
+                // Show all cards
+                document.querySelectorAll('.collection-card').forEach(card => {
+                    card.style.display = 'block';
+                });
+
+                // Show all sections
+                document.querySelectorAll('[class$="-section"]').forEach(section => {
+                    section.style.display = 'block';
+                });
+
+                // Re-apply active category filter
+                const activeCategory = document.querySelector('.category.active');
+                if (activeCategory) {
+                    const target = activeCategory.dataset.target;
+                    document.querySelectorAll('[class$="-section"]').forEach(section => {
+                        if (target === 'all' || section.id === target) {
+                            section.style.display = 'block';
+                        } else {
+                            section.style.display = 'none';
+                        }
+                    });
+                }
+            }
+        </script>
+
+        <div class="action-buttons">
+            <button class="btn btn-primary" id="walletConnect"><span>Connect wallet</span></button>
+            <div class="dropdown" style="position: relative; display: inline-block;">
+                <div id="icon-btn" style="cursor: pointer; font-size: 20px; padding: 10px; border-radius: 5px;">👤</div>
+                <div class="dropdown-content"
+                    style="display: none; position: absolute; right: 0; background-color: #1a1a1a; min-width: 200px; box-shadow: 0px 8px 16px rgba(0,0,0,0.2); border-radius: 8px; padding: 8px 0; z-index: 1000;">
+                    <div style="padding: 8px 16px; color: #999; font-size: 0.9em;">Login</div>
+                    <a href="#"
+                        style="color: #fff; padding: 12px 16px; display: block; text-decoration: none; font-size: 0.95em;">Profile</a>
+                    <a href="#"
+                        style="color: #fff; padding: 12px 16px; display: block; text-decoration: none; font-size: 0.95em;">Watchlist</a>
+                    <a href="#"
+                        style="color: #fff; padding: 12px 16px; display: block; text-decoration: none; font-size: 0.95em;">Deals</a>
+                    <a href="#"
+                        style="color: #fff; padding: 12px 16px; display: block; text-decoration: none; font-size: 0.95em;">Studio</a>
+                    <a href="#"
+                        style="color: #fff; padding: 12px 16px; display: block; text-decoration: none; font-size: 0.95em; background-color: #333; margin: 8px 0;">Try
+                        OS2</a>
+
+                    <div style="border-top: 1px solid #333; margin: 8px 0;"></div>
+
+                    <a href="#"
+                        style="color: #fff; padding: 12px 16px; display: block; text-decoration: none; font-size: 0.95em;">Settings</a>
+                    <div
+                        style="padding: 12px 16px; color: #fff; display: flex; justify-content: space-between; align-items: center;">
+                        Language <span style="color: #666;">en ></span>
+                    </div>
+                    <div
+                        style="padding: 12px 16px; color: #fff; display: flex; justify-content: space-between; align-items: center;">
+                        Night Mode
+                        <label style="cursor: pointer;">
+                            <input type="checkbox" style="display: none;">
+                            <span
+                                style="display: inline-block; width: 36px; height: 20px; background: #333; border-radius: 10px; position: relative;">
+                                <span
+                                    style="position: absolute; width: 16px; height: 16px; background: #666; border-radius: 50%; top: 2px; left: 2px;"></span>
+                            </span>
+                        </label>
+                    </div>
+
+                    <div style="border-top: 1px solid #333; margin: 8px 0;"></div>
+
+                    <div style="padding: 8px 16px; color: #999; font-size: 0.9em;">Learn</div>
+                    <a href="#"
+                        style="color: #fff; padding: 12px 16px; display: block; text-decoration: none; font-size: 0.95em;">Help
+                        center<span style="float: right; color: #666;">iw all</span></a>
+                    <a href="#"
+                        style="color: #fff; padding: 12px 16px; display: block; text-decoration: none; font-size: 0.95em;">Support<span
+                            style="float: right; color: #666;">/olume</span></a>
+                </div>
+            </div>
+
+            <script>
+                // Hover functionality
+                const iconBtn = document.getElementById("icon-btn");
+                const dropdown = document.querySelector(".dropdown-content");
+                let hoverTimeout;
+
+                iconBtn.addEventListener("mouseenter", () => {
+                    clearTimeout(hoverTimeout);
+                    dropdown.style.display = "block";
+                });
+
+                iconBtn.addEventListener("mouseleave", () => {
+                    hoverTimeout = setTimeout(() => {
+                        if (!dropdown.matches(":hover")) {
+                            dropdown.style.display = "none";
+                        }
+                    }, 200);
+                });
+
+                dropdown.addEventListener("mouseenter", () => {
+                    clearTimeout(hoverTimeout);
+                    dropdown.style.display = "block";
+                });
+
+                dropdown.addEventListener("mouseleave", () => {
+                    hoverTimeout = setTimeout(() => {
+                        dropdown.style.display = "none";
+                    }, 200);
+                });
+
+                // Close dropdown when clicking outside
+                document.addEventListener("click", (e) => {
+                    if (!iconBtn.contains(e.target) && !dropdown.contains(e.target)) {
+                        dropdown.style.display = "none";
+                    }
+                });
+            </script>
+
+            <div class="icon-btn" id="cartButton">🛒</div>
+        </div>
+    </header>
+
+    <div class="hero-section fade-in">
+        <div class="hero-bg"></div>
+        <div class="hero-content slide-up">
+            <h1 class="hero-title">Discover, Collect, and Trade Event NFTs</h1>
+            <p class="hero-subtitle">The ultimate marketplace for digital event tickets and experiences powered by
+                blockchain technology</p>
+            <div class="hero-buttons">
+                <button class="btn btn-primary" onclick="scrollToEvents()">Explore Events</button>
+                <a href="https://www.asrock.com/general/TermsPrivacy.asp?cat=NFT#:~:text=To%20the%20extent%20that%20the,to%20the%20license%20and%20restrictions" class="btn btn-outline" >Learn More</a>
+            </div>
+        </div>
+    </div>
+    <script>
+        function scrollToEvents() {
+            document.getElementById('eventsSection').scrollIntoView({
+                behavior: 'smooth'
+            });
+        }</script>
+    <div class="categories" id="eventsSection">
+        <div class="category active" data-target="all">All</div>
+        <div class="category" data-target="concerts">Concerts</div>
+        <div class="category" data-target="parties">Parties</div>
+        <div class="category" data-target="sports">Sports</div>
+        <div class="category" data-target="festivals">Festivals</div>
+        <div class="category" data-target="theater">Theater</div>
+        <div class="category" data-target="exhibitions">Exhibitions</div>
+        <div class="category" data-target="conferences">Conferences</div>
+    </div>
+
+    <div class="section-title">
+        <div>Featured Events</div>
+        <div class="view-all">View All</div>
+    </div>
+
+    <div class="collections-grid">
+        <div class="collection-card" onclick="openModal('concert1')">
+            <div class="badge">Featured</div>
+            <img class="collection-image"
+                src="https://images.pexels.com/photos/1190297/pexels-photo-1190297.jpeg?auto=compress&cs=tinysrgb&w=600"
+                alt="Concert Event">
+            <div class="collection-info">
+                <div class="collection-name">Summer Music Festival 2025</div>
+                <div>Featuring top artists and bands</div>
+                <div class="collection-price">
+                    <div>
+                        <div>Floor Price</div>
+                        <div class="price-value">0.8 ETH</div>
+                    </div>
+                    <div>
+                        <div>Date</div>
+                        <div class="price-value">Apr 15, 2025</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="collection-card" onclick="openModal('sports1')">
+            <div class="badge live-badge">
+                <div class="pulse"></div>LIVE
+            </div>
+            <img class="collection-image"
+                src="https://images.ctfassets.net/h8q6lxmb5akt/5qXnOINbPrHKXWa42m6NOa/421ab176b501f5bdae71290a8002545c/nba-logo_2x.png"
+                alt="Sports Event">
+            <div class="collection-info">
+                <div class="collection-name">Championship Finals</div>
+                <div>Season finale basketball championship</div>
+                <div class="collection-price">
+                    <div>
+                        <div>Floor Price</div>
+                        <div class="price-value">1.2 ETH</div>
+                    </div>
+                    <div>
+                        <div>Date</div>
+                        <div class="price-value">Mar 20, 2025</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="collection-card" onclick="openModal('party1')">
+            <img class="collection-image"
+                src="https://www.bookeventz.com/blog/wp-content/uploads/2016/09/maxresdefault.jpg" alt="Party Event">
+            <div class="collection-info">
+                <div class="collection-name">Neon Night Party</div>
+                <div>The ultimate VIP clubbing experience</div>
+                <div class="collection-price">
+                    <div>
+                        <div>Floor Price</div>
+                        <div class="price-value">0.5 ETH</div>
+                    </div>
+                    <div>
+                        <div>Date</div>
+                        <div class="price-value">Apr 02, 2025</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="collection-card" onclick="openModal('exhibition1')">
+            <img class="collection-image"
+                src="https://bykerwin.com/wp-content/uploads/2024/10/IMG_9839-Large-crypt-main-wall-landscape-wordpress.jpeg"
+                alt="Exhibition Event">
+            <div class="collection-info">
+                <div class="collection-name">Digital Art Exhibition</div>
+                <div>Showcasing the future of digital art</div>
+                <div class="collection-price">
+                    <div>
+                        <div>Floor Price</div>
+                        <div class="price-value">0.3 ETH</div>
+                    </div>
+                    <div>
+                        <div>Date</div>
+                        <div class="price-value">May 10, 2025</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-header slide-up">
+        <h2>Popular Categories</h2>
+        <p>Explore the most popular event categories in our marketplace</p>
+    </div>
+
+    <div class="concert-section" id="concerts">
+        <div class="section-title">
+            <div>Concerts & Music Events</div>
+            <div class="view-all">View All</div>
+        </div>
+
+        <div class="collections-grid">
+            <div class="collection-card" onclick="openModal('concert1')">
+                <img class="collection-image"
+                    src="data:image/jpeg;base64,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"
+                    alt="Rock Concert">
+                <div class="collection-info">
+                    <div class="collection-name">Rock Festival 2025</div>
+                    <div>Featuring legendary rock bands</div>
+                    <div class="collection-price">
+                        <div>
+                            <div>Floor Price</div>
+                            <div class="price-value">0.7 ETH</div>
+                        </div>
+                        <div>
+                            <div>Date</div>
+                            <div class="price-value">Jun 5, 2025</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collection-card" onclick="openModal('concert1')">
+                <img class="collection-image"
+                    src="https://c.saavncdn.com/396/EDM-Night-English-2018-20181001161123-500x500.jpg"
+                    alt="EDM Festival">
+                <div class="collection-info">
+                    <div class="collection-name">EDM Night</div>
+                    <div>Electronic dance music extravaganza</div>
+                    <div class="collection-price">
+                        <div>
+                            <div>Floor Price</div>
+                            <div class="price-value">0.5 ETH</div>
+                        </div>
+                        <div>
+                            <div>Date</div>
+                            <div class="price-value">Apr 18, 2025</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collection-card" onclick="openModal('concert1')">
+                <img class="collection-image"
+                    src="https://static.vecteezy.com/system/resources/previews/003/685/283/non_2x/jazz-blues-night-club-neon-signs-style-text-free-vector.jpg"
+                    alt="Jazz Concert">
+                <div class="collection-info">
+                    <div class="collection-name">Jazz & Blues Night</div>
+                    <div>Smooth jazz and blues performances</div>
+                    <div class="collection-price">
+                        <div>
+                            <div>Floor Price</div>
+                            <div class="price-value">0.4 ETH</div>
+                        </div>
+                        <div>
+                            <div>Date</div>
+                            <div class="price-value">May 22, 2025</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collection-card" onclick="openModal('concert1')">
+                <img class="collection-image"
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJdUSJizAbg2FSDvVT4nQXC_4_93fDsgN4Fg&s"
+                    alt="Pop Concert">
+                <div class="collection-info">
+                    <div class="collection-name">Pop Stars Tour</div>
+                    <div>Featuring chart-topping artists</div>
+                    <div class="collection-price">
+                        <div>
+                            <div>Floor Price</div>
+                            <div class="price-value">1.0 ETH</div>
+                        </div>
+                        <div>
+                            <div>Date</div>
+                            <div class="price-value">Jul 10, 2025</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="sports-section" id="sports">
+        <div class="section-title">
+            <div>Sports & Games</div>
+            <div class="view-all">View All</div>
+        </div>
+
+        <div class="collections-grid">
+            <div class="collection-card" onclick="openModal('sports1')">
+                <img class="collection-image"
+                    src="data:image/jpeg;base64,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"
+                    alt="Football Match">
+                <div class="collection-info">
+                    <div class="collection-name">Championship Football</div>
+                    <div>Season finale match tickets</div>
+                    <div class="collection-price">
+                        <div>
+                            <div>Floor Price</div>
+                            <div class="price-value">1.2 ETH</div>
+                        </div>
+                        <div>
+                            <div>Date</div>
+                            <div class="price-value">May 28, 2025</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collection-card" onclick="openModal('sports1')">
+                <img class="collection-image"
+                    src="https://m.media-amazon.com/images/I/71RQJ2ldxFL._AC_UF1000,1000_QL80_.jpg"
+                    alt="Basketball Game">
+                <div class="collection-info">
+                    <div class="collection-name">All-Star Basketball</div>
+                    <div>Annual all-star game tickets</div>
+                    <div class="collection-price">
+                        <div>
+                            <div>Floor Price</div>
+                            <div class="price-value">0.9 ETH</div>
+                        </div>
+                        <div>
+                            <div>Date</div>
+                            <div class="price-value">Apr 12, 2025</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collection-card" onclick="openModal('sports1')">
+                <div class="badge">VIP</div>
+                <img class="collection-image"
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQM2TS1iNV9kjtMjJz83c0XQmC9nG_qwzaXeA&s"
+                    alt="Tennis Match">
+                <div class="collection-info">
+                    <div class="collection-name">Grand Slam Tennis</div>
+                    <div>Premium tickets for final matches</div>
+                    <div class="collection-price">
+                        <div>
+                            <div>Floor Price</div>
+                            <div class="price-value">1.5 ETH</div>
+                        </div>
+                        <div>
+                            <div>Date</div>
+                            <div class="price-value">Jun 30, 2025</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collection-card" onclick="openModal('sports1')">
+                <img class="collection-image"
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxX53tf_dhWOPGaeffxvYn8CNcDUQG25rlQw&s"
+                    alt="eSports Tournament">
+                <div class="collection-info">
+                    <div class="collection-name">eSports Finals</div>
+                    <div>Global gaming championship</div>
+                    <div class="collection-price">
+                        <div>
+                            <div>Floor Price</div>
+                            <div class="price-value">0.6 ETH</div>
+                        </div>
+                        <div>
+                            <div>Date</div>
+                            <div class="price-value">May 15, 2025</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="parties-section" id="parties">
+        <div class="section-title">
+            <div>Parties & Nightlife</div>
+            <div class="view-all">View All</div>
+        </div>
+        <script>
+            // Category filtering functionality
+            document.querySelectorAll('.category').forEach(button => {
+                button.addEventListener('click', function () {
+                    // Remove active class from all buttons
+                    document.querySelectorAll('.category').forEach(btn => btn.classList.remove('active'));
+
+                    // Add active class to clicked button
+                    this.classList.add('active');
+
+                    // Get target section ID
+                    const target = this.dataset.target;
+
+                    // Show/hide sections
+                    document.querySelectorAll('[class$="-section"]').forEach(section => {
+                        if (target === 'all' || section.id === target) {
+                            section.style.display = 'block';
+                        } else {
+                            section.style.display = 'none';
+                        }
+                    });
+                });
+            });
+
+            // Activate All button by default
+            document.querySelector('.category[data-target="all"]').click();
+        </script>
+
+        <div class="collections-grid">
+            <div class="collection-card" onclick="openModal('party1')">
+                <img class="collection-image"
+                    src="https://media.istockphoto.com/id/523819320/photo/vip-pass-exclusive-access.jpg?s=612x612&w=0&k=20&c=sYC1SYyFzgFYhBpgqOAjjr6KN9Q4znki1UMnThEm-po="
+                    alt="VIP Club Party">
+                <div class="collection-info">
+                    <div class="collection-name">VIP Club Access</div>
+                    <div>Exclusive nightclub experience</div>
+                    <div class="collection-price">
+                        <div>
+                            <div>Floor Price</div>
+                            <div class="price-value">0.4 ETH</div>
+                        </div>
+                        <div>
+                            <div>Date</div>
+                            <div class="price-value">Mar 25, 2025</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collection-card" onclick="openModal('party1')">
+                <div class="badge">Limited</div>
+                <img class="collection-image"
+                    src="https://images.stockcake.com/public/c/e/1/ce1b2237-6357-4c04-a757-f6482dfb2acc_large/evening-rooftop-party-stockcake.jpg"
+                    alt="Rooftop Party">
+                <div class="collection-info">
+                    <div class="collection-name">Rooftop Sunset Party</div>
+                    <div>Luxury rooftop experience</div>
+                    <div class="collection-price">
+                        <div>
+                            <div>Floor Price</div>
+                            <div class="price-value">0.7 ETH</div>
+                        </div>
+                        <div>
+                            <div>Date</div>
+                            <div class="price-value">Apr 8, 2025</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collection-card" onclick="openModal('party1')"> 
+                <img class="collection-image"
+                    src="https://www.udayavani.com/wp-content/uploads/2025/01/Beach-Festival1.jpg" alt="Beach Party">
+                <div class="collection-info">
+                    <div class="collection-name">Beach Festival</div>
+                    <div>All-day beach party and music</div>
+                    <div class="collection-price">
+                        <div>
+                            <div>Floor Price</div>
+                            <div class="price-value">0.5 ETH</div>
+                        </div>
+                        <div>
+                            <div>Date</div>
+                            <div class="price-value">Jul 3, 2025</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collection-card" onclick="openModal('party1')">
+                <img class="collection-image"
+                    src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/a3be659f-98c5-4c0b-a8ca-f9f1e9ff47fe/d5k66yh-e6e176e3-81e0-442e-9638-36fd6f25102c.jpg/v1/fill/w_420,h_544,q_75,strp/retro_party_flyer_template_by_hugoo13_d5k66yh-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NTQ0IiwicGF0aCI6IlwvZlwvYTNiZTY1OWYtOThjNS00YzBiLWE4Y2EtZjlmMWU5ZmY0N2ZlXC9kNWs2NnloLWU2ZTE3NmUzLTgxZTAtNDQyZS05NjM4LTM2ZmQ2ZjI1MTAyYy5qcGciLCJ3aWR0aCI6Ijw9NDIwIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmltYWdlLm9wZXJhdGlvbnMiXX0.RYh7DW26dNlW42kyM_I6xaLBgPAyBF5-BAD9MEROcH4"
+                    alt="Themed Party">
+                <div class="collection-info">
+                    <div class="collection-name">80s Retro Night</div>
+                    <div>Throwback themed party experience</div>
+                    <div class="collection-price">
+                        <div>
+                            <div>Floor Price</div>
+                            <div class="price-value">0.3 ETH</div>
+                        </div>
+                        <div>
+                            <div>Date</div>
+                            <div class="price-value">May 18, 2025</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="trending-section fade-in">
+        <div class="trend-tabs">
+            <div class="trend-tab active">Trending</div>
+            <div class="trend-tab">Top Sales</div>
+            <div class="trend-tab">Upcoming</div>
+        </div>
+
+        <div class="time-filters">
+            <div class="time-filter active">24h</div>
+            <div class="time-filter">7d</div>
+            <div class="time-filter">30d</div>
+            <div class="time-filter">All Time</div>
+        </div>
+
+        <table class="trending-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Collection</th>
+                    <th>Volume</th>
+                    <th>Floor Price</th>
+                    <th>Owners</th>
+                    <th>Items</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="trending-number">1</td>
+                    <td>
+                        <div class="collection-row" onclick="openModal('sports1')">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/2025_FIFA_Club_World_Cup.svg/1200px-2025_FIFA_Club_World_Cup.svg.png"
+                                alt="Collection">
+                            <div>World Cup Finals 2025</div>
+                        </div>
+                    </td>
+                    <td>845 ETH</td>
+                    <td>1.5 ETH</td>
+                    <td>12.5K</td>
+                    <td>50K</td>
+                </tr>
+                <tr>
+                    <td class="trending-number">2</td>
+                    <td>
+                        <div class="collection-row">
+                            <img src="https://upload.wikimedia.org/wikipedia/en/2/2c/GiMA_Awards.png" alt="Collection">
+                            <div>Global Music Awards</div>
+                        </div>
+                    </td>
+                    <td>742 ETH</td>
+                    <td>0.8 ETH</td>
+                    <td>8.2K</td>
+                    <td>25K</td>
+                </tr>
+                <tr>
+                    <td class="trending-number">3</td>
+                    <td>
+                        <div class="collection-row">
+                            <img src="https://play-lh.googleusercontent.com/gNToWY4-nL4_uKA93aQw6qFmG8nE4Ukq6TX9RGaOZ8CxObRDKBoZOHlP2c5CyXPGXA"
+                                alt="Collection">
+                            <div>Comic Convention</div>
+                        </div>
+                    </td>
+                    <td>510 ETH</td>
+                    <td>0.4 ETH</td>
+                    <td>15K</td>
+                    <td>30K</td>
+                </tr>
+                <tr>
+                    <td class="trending-number">4</td>
+                    <td>
+                        <div class="collection-row">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOaA7ZkLM3qNrDoKjtYPGhvfWXcHMhLx87AA&s"
+                                alt="Collection">
+                            <div>Tech Conference 2025</div>
+                        </div>
+                    </td>
+                    <td>320 ETH</td>
+                    <td>0.6 ETH</td>
+                    <td>7.8K</td>
+                    <td>12K</td>
+                </tr>
+                <tr>
+                    <td class="trending-number">5</td>
+                    <td>
+                        <div class="collection-row">
+                            <img src="https://images.rawpixel.com/image_png_800/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvcm01MTAtZWxlbWVudC00OS1sMHZwemFzai5wbmc.png "
+                                alt="Collection">
+                            <div>Summer Festival Pass</div>
+                        </div>
+                    </td>
+                    <td>280 ETH</td>
+                    <td>0.35 ETH</td>
+                    <td>9.4K</td>
+                    <td>20K</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer">
+        <div class="footer-logo">
+            <div class="logo">
+                <div class="logo-icon">🎟️</div>
+                TruePass
+            </div>
+        </div>
+        <div class="footer-links">
+            <a href="#" class="footer-link">About</a>
+            <a href="#" class="footer-link">Blog</a>
+            <a href="#" class="footer-link">Help Center</a>
+            <a href="#" class="footer-link">Terms</a>
+            <a href="#" class="footer-link">Privacy Policy</a>
+            <a href="#" class="footer-link">Careers</a>
+            <a href="#" class="footer-link">Contact</a>
+        </div>
+        <div class="footer-copyright">
+            © 2025 TruePass. All rights reserved.
+        </div>
+    </div>
+
+    <!-- Event Details Modal -->
+    <div class="modal" id="eventModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Event Details</div>
+                <span class="modal-close" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <h2 id="modalTitle">Event Title</h2>
+                <p id="modalDescription">Event description goes here...</p>
+
+                <div class="countdown">
+                    <div class="countdown-item">
+                        <div class="countdown-value" id="days">00</div>
+                        <div class="countdown-label">Days</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-value" id="hours">00</div>
+                        <div class="countdown-label">Hours</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-value" id="minutes">00</div>
+                        <div class="countdown-label">Minutes</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-value" id="seconds">00</div>
+                        <div class="countdown-label">Seconds</div>
+                    </div>
+                </div>
+
+                <div class="event-details">
+                    <div class="detail-group">
+                        <div class="detail-label">Location</div>
+                        <div class="detail-value" id="modalLocation">Event location</div>
+                    </div>
+                    <div class="detail-group">
+                        <div class="detail-label">Date</div>
+                        <div class="detail-value" id="modalDate">Event date</div>
+                    </div>
+                    <div class="detail-group">
+                        <div class="detail-label">Floor Price</div>
+                        <div class="detail-value" id="modalPrice">Event price</div>
+                    </div>
+                    <div class="detail-group">
+                        <div class="detail-label">Supply</div>
+                        <div class="detail-value" id="modalSupply">Event tickets supply</div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-outline" onclick="closeModal()">Close</button>
+                <button class="btn btn-primary">Buy Now</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wallet Connect Modal -->
+    <div class="modal" id="walletModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Connect Your Wallet</div>
+                <span class="modal-close" onclick="closeWalletModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>Choose a wallet to connect to TruePass marketplace:</p>
+                <div class="wallet-options">
+                    <div class="wallet-option">
+                        <img src="logo\metamask.png" alt="MetaMask" class="wallet-icon">
+                        <div class="wallet-name">MetaMask</div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification">Item added to cart!</div>
+
+    <script>
+        // Event modal functionality
+        function openModal(eventId) {
+            const modal = document.getElementById('eventModal');
+            modal.style.display = 'block';
+
+            // Set event details based on the event ID
+            if (eventId === 'concert1') {
+                document.getElementById('modalTitle').textContent = 'Summer Music Festival 2025';
+                document.getElementById('modalDescription').textContent = 'Experience the ultimate summer music festival featuring top artists and bands from around the world. This exclusive NFT grants you VIP access to all areas.';
+                document.getElementById('modalLocation').textContent = 'Sunshine Park, Miami';
+                document.getElementById('modalDate').textContent = 'April 15, 2025';
+                document.getElementById('modalPrice').textContent = '0.8 ETH';
+                document.getElementById('modalSupply').textContent = '5,000';
+                
+
+            } else if (eventId === 'sports1') {
+                document.getElementById('modalTitle').textContent = 'Championship Finals';
+                document.getElementById('modalDescription').textContent = 'Witness basketball history at the season finale championship game. This NFT ticket includes premium seating and exclusive memorabilia.';
+                document.getElementById('modalLocation').textContent = 'Stadium Arena, Los Angeles';
+                document.getElementById('modalDate').textContent = 'March 20, 2025';
+                document.getElementById('modalPrice').textContent = '1.2 ETH';
+                document.getElementById('modalSupply').textContent = '3,000';
+            } else if (eventId === 'party1') {
+                document.getElementById('modalTitle').textContent = 'Neon Night Party';
+                document.getElementById('modalDescription').textContent = 'The ultimate VIP clubbing experience with world-famous DJs and unlimited premium drinks. This NFT grants you skip-the-line access.';
+                document.getElementById('modalLocation').textContent = 'Skylight Club, New York';
+                document.getElementById('modalDate').textContent = 'April 2, 2025';
+                document.getElementById('modalPrice').textContent = '0.5 ETH';
+                document.getElementById('modalSupply').textContent = '1,000';
+            } else if (eventId === 'exhibition1') {
+                document.getElementById('modalTitle').textContent = 'Digital Art Exhibition';
+                document.getElementById('modalDescription').textContent = 'Explore the future of digital art at this immersive exhibition featuring renowned NFT artists. Your ticket NFT includes a commemorative digital collectible.';
+                document.getElementById('modalLocation').textContent = 'Modern Gallery, San Francisco';
+                document.getElementById('modalDate').textContent = 'May 10, 2025';
+                document.getElementById('modalPrice').textContent = '0.3 ETH';
+                document.getElementById('modalSupply').textContent = '2,500';
+            }
+
+            // Set countdown
+            startCountdown();
+        }
+
+        function closeModal() {
+            document.getElementById('eventModal').style.display = 'none';
+        }
+
+        // Wallet modal
+        document.getElementById('walletConnect').addEventListener('click', function () {
+            document.getElementById('walletModal').style.display = 'block';
+        });
+
+        function closeWalletModal() {
+            document.getElementById('walletModal').style.display = 'none';
+        }
+
+        // Cart notification
+        document.getElementById('cartButton').addEventListener('click', function () {
+            const notification = document.getElementById('notification');
+            notification.classList.add('show');
+
+            setTimeout(function () {
+                notification.classList.remove('show');
+            }, 3000);
+        });
+
+        // Close modals when clicking outside
+        window.onclick = function (event) {
+            const eventModal = document.getElementById('eventModal');
+            const walletModal = document.getElementById('walletModal');
+
+            if (event.target === eventModal) {
+                eventModal.style.display = 'none';
+            }
+
+            if (event.target === walletModal) {
+                walletModal.style.display = 'none';
+            }
+        }
+
+        // Countdown functionality
+        function startCountdown() {
+            // Set the date for the countdown (example: 15 days from now)
+            const countDownDate = new Date();
+            countDownDate.setDate(countDownDate.getDate() + 15);
+
+            // Update the countdown every 1 second
+            const x = setInterval(function () {
+                const now = new Date().getTime();
+                const distance = countDownDate - now;
+
+                // Calculate days, hours, minutes and seconds
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                // Display the result
+                document.getElementById("days").innerHTML = days < 10 ? "0" + days : days;
+                document.getElementById("hours").innerHTML = hours < 10 ? "0" + hours : hours;
+                document.getElementById("minutes").innerHTML = minutes < 10 ? "0" + minutes : minutes;
+                document.getElementById("seconds").innerHTML = seconds < 10 ? "0" + seconds : seconds;
+
+                // If the countdown is finished, clear the interval
+                if (distance < 0) {
+                    clearInterval(x);
+                    document.getElementById("days").innerHTML = "00";
+                    document.getElementById("hours").innerHTML = "00";
+                    document.getElementById("minutes").innerHTML = "00";
+                    document.getElementById("seconds").innerHTML = "00";
+                }
+            }, 1000);
+        }
+    </script>
+    <script src="https://cdn.botpress.cloud/webchat/v2.2/inject.js"></script>
+    <script src="https://files.bpcontent.cloud/2025/03/09/14/20250309140752-2BXBGDP5.js"></script>
+</body>
+ 
+</html> 
