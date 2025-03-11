@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,6 +13,7 @@
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
+
         :root {
             --primary-color: #4da3ff;
             --secondary-color: #8762ff;
@@ -28,16 +30,19 @@
             --border-radius: 8px;
             --transition: all 0.3s ease;
         }
+
         body {
             background-color: var(--dark-color);
             color: var(--light-color);
             line-height: 1.6;
         }
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 15px;
         }
+
         header {
             background-color: var(--header-bg);
             box-shadow: var(--box-shadow);
@@ -45,21 +50,24 @@
             top: 0;
             z-index: 100;
         }
+
         .navbar {
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 15px 0;
         }
+
         .logo {
             font-size: 24px;
             font-weight: 700;
             color: var(--primary-color);
         }
+
         .logo span {
             color: var(--accent-color);
         }
-      
+
         .btn {
             display: inline-block;
             background-color: var(--primary-color);
@@ -72,28 +80,35 @@
             transition: var(--transition);
             text-decoration: none;
         }
+
         .btn:hover {
             background-color: #3a8eee;
             transform: translateY(-2px);
         }
+
         .btn-outline {
             background-color: transparent;
             border: 2px solid var(--primary-color);
             color: var(--primary-color);
         }
+
         .btn-outline:hover {
             background-color: var(--primary-color);
             color: var(--light-color);
         }
+
         .btn-accent {
             background-color: var(--accent-color);
         }
+
         .btn-accent:hover {
             background-color: #ff2176;
         }
+
         .btn-success {
             background-color: var(--success-color);
         }
+
         .btn-success:hover {
             background-color: #3bbe5f;
         }
@@ -202,12 +217,12 @@
             .form-row {
                 grid-template-columns: 1fr;
             }
-            
+
             .form-actions {
                 flex-direction: column;
                 gap: 15px;
             }
-            
+
             .form-actions .btn {
                 width: 100%;
                 text-align: center;
@@ -215,6 +230,7 @@
         }
     </style>
 </head>
+
 <body>
     <header>
         <div class="container">
@@ -227,13 +243,14 @@
     <main class="container">
         <div class="form-container">
             <h2 class="form-title">Add New Event</h2>
-            
+
             <form id="addEventForm">
                 <div class="form-group">
                     <label for="eventTitle" class="form-label">Event Title</label>
-                    <input type="text" id="eventTitle" name="eventTitle" class="form-control" placeholder="Enter event title" required>
+                    <input type="text" id="eventTitle" name="eventTitle" class="form-control"
+                        placeholder="Enter event title" required>
                 </div>
-                
+
                 <div class="form-row">
                     <div class="form-group">
                         <label for="eventCategory" class="form-label">Category</label>
@@ -242,47 +259,51 @@
                             <option value="concerts">Concerts and Music Events</option>
                             <option value="sports">Sports & Games</option>
                             <option value="party">Parties and Nightlife</option>
-                            
+
                         </select>
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="eventCapacity" class="form-label">Capacity</label>
-                        <input type="number" id="eventCapacity" name="eventCapacity" class="form-control" placeholder="Number of attendees" min="1" required>
+                        <input type="number" id="eventCapacity" name="eventCapacity" class="form-control"
+                            placeholder="Number of attendees" min="1" required>
                     </div>
                 </div>
-                
+
                 <div class="form-row">
                     <div class="form-group">
                         <label for="eventDate" class="form-label">Date</label>
                         <input type="date" id="eventDate" name="eventDate" class="form-control" required>
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="eventTime" class="form-label">Time</label>
                         <input type="time" id="eventTime" name="eventTime" class="form-control" required>
                     </div>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="eventLocation" class="form-label">Location</label>
-                    <input type="text" id="eventLocation" name="eventLocation" class="form-control" placeholder="Enter event location" required>
+                    <input type="text" id="eventLocation" name="eventLocation" class="form-control"
+                        placeholder="Enter event location" required>
                     <div class="form-hint">Physical address or virtual meeting link</div>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="eventDescription" class="form-label">Description</label>
-                    <textarea id="eventDescription" name="eventDescription" class="form-control" placeholder="Describe your event" required></textarea>
+                    <textarea id="eventDescription" name="eventDescription" class="form-control"
+                        placeholder="Describe your event" required></textarea>
                 </div>
-                
+
                 <div class="form-actions">
                     <a href="index.html" class="btn btn-outline">Cancel</a>
                     <div>
-                        <button type="button" class="btn btn-outline" style="margin-right: 10px;" id="saveAsDraft">Save as Draft</button>
+                        <button type="button" class="btn btn-outline" style="margin-right: 10px;" id="saveAsDraft">Save
+                            as Draft</button>
                         <button type="submit" class="btn btn-success">Publish Event</button>
                     </div>
                 </div>
-                
+
                 <div class="form-note">
                     <p>Events will be reviewed for compliance with our community guidelines before being published.</p>
                 </div>
@@ -299,19 +320,54 @@
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
+            const addEventForm = document.getElementById('addEventForm');
+
+            addEventForm.addEventListener('submit', async function (e) {
+                e.preventDefault();
+
+                const formData = new FormData(addEventForm);
+                const eventData = {
+                    title: formData.get('eventTitle'),
+                    category: formData.get('eventCategory'),
+                    capacity: formData.get('eventCapacity'),
+                    date: `${formData.get('eventDate')}T${formData.get('eventTime')}`,
+                    location: formData.get('eventLocation'),
+                    description: formData.get('eventDescription'),
+                    status: 'upcoming'
+                };
+
+                try {
+                    const response = await fetch("http://localhost:5000/api/events", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(eventData)
+                    });
+
+                    if (response.ok) {
+                        alert("Event published successfully!");
+                        window.location.href = 'index.html';
+                    } else {
+                        alert("Failed to publish event.");
+                    }
+                } catch (error) {
+                    console.error("Error adding event:", error);
+                }
+            });
+        });
+        document.addEventListener('DOMContentLoaded', function () {
             const addEventForm = document.getElementById('addEventForm');
             const saveAsDraftBtn = document.getElementById('saveAsDraft');
-            
+
             // Set default date to today
             const today = new Date();
             const formattedDate = today.toISOString().split('T')[0];
             document.getElementById('eventDate').value = formattedDate;
-            
+
             // Handle form submission
-            addEventForm.addEventListener('submit', function(e) {
+            addEventForm.addEventListener('submit', function (e) {
                 e.preventDefault();
-                
+
                 // Collect form data
                 const formData = new FormData(addEventForm);
                 const eventData = {
@@ -324,20 +380,20 @@
                     status: 'upcoming',
                     image: "/api/placeholder/400/300" // Placeholder for now
                 };
-                
+
                 // Save to localStorage for demo purposes
                 const events = JSON.parse(localStorage.getItem('eventHubEvents') || '[]');
                 eventData.id = events.length > 0 ? Math.max(...events.map(e => e.id)) + 1 : 1;
                 events.push(eventData);
                 localStorage.setItem('eventHubEvents', JSON.stringify(events));
-                
+
                 // Redirect back to main page
                 alert('Event published successfully!');
                 window.location.href = 'index.html';
             });
-            
+
             // Handle "Save as Draft" button
-            saveAsDraftBtn.addEventListener('click', function() {
+            saveAsDraftBtn.addEventListener('click', function () {
                 // Similar to above but with draft status
                 const formData = new FormData(addEventForm);
                 const eventData = {
@@ -350,13 +406,13 @@
                     status: 'draft',
                     image: "/api/placeholder/400/300" // Placeholder for now
                 };
-                
+
                 // Save to localStorage for demo purposes
                 const events = JSON.parse(localStorage.getItem('eventHubEvents') || '[]');
                 eventData.id = events.length > 0 ? Math.max(...events.map(e => e.id)) + 1 : 1;
                 events.push(eventData);
                 localStorage.setItem('eventHubEvents', JSON.stringify(events));
-                
+
                 // Redirect back to main page
                 alert('Event saved as draft!');
                 window.location.href = 'index.html';
@@ -364,4 +420,5 @@
         });
     </script>
 </body>
+
 </html>

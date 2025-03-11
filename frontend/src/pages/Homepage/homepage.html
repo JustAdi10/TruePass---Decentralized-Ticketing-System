@@ -1072,7 +1072,9 @@
             }
         }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/@metamask/detect-provider"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@metamask/detect-provider/dist/detect-provider.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+
 </head>
 
 <body>
@@ -1190,7 +1192,7 @@
         </script>
 
         <div class="action-buttons">
-            <button class="btn btn-primary" id="walletConnect"><span>Connect wallet</span></button>
+            <button class="btn btn-primary" id="walletConnect" onclick="connectMetaMask()"><span>Connect wallet</span></button>
             <div class="dropdown" style="position: relative; display: inline-block;">
                 <div id="icon-btn" style="cursor: pointer; font-size: 20px; padding: 10px; border-radius: 5px;">👤</div>
                 <div class="dropdown-content"
