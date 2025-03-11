@@ -1097,102 +1097,103 @@
         </div>
         <!-- Add this search functionality script -->
         <script>
-            
+
             async function connectMetaMask() {
-            const provider = await detectEthereumProvider();
+                const provider = await detectEthereumProvider();
 
-            if (provider) {
-                console.log('MetaMask is installed!');
-                try {
-                    // Request account access if needed
-                    const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-                    const account = accounts[0];
-                    console.log('Connected account:', account);
-                    // Display connected account
-                    document.getElementById('walletAddress').textContent = `Connected: ${account}`;
-                } catch (error) {
-                    console.error('User rejected the request.');
-                }
-            } else {
-                console.error('Please install MetaMask!');
-            }
-
-            // Search functionality with revert capability
-            document.querySelector('.search-bar input').addEventListener('keypress', function (e) {
-                if (e.key === 'Enter') {
-                    performSearch(this.value);
-                }
-            });
-
-            document.querySelector('.search-icon').addEventListener('click', function () {
-                const searchValue = document.querySelector('.search-bar input').value;
-                performSearch(searchValue);
-            });
-
-            document.querySelector('.search-bar input').addEventListener('input', function (e) {
-                if (this.value === '') {
-                    revertSearch();
-                }
-            });
-
-            function performSearch(query) {
-                const searchTerm = query.toLowerCase().trim();
-
-                if (!searchTerm) {
-                    revertSearch();
-                    return;
+                if (provider) {
+                    console.log('MetaMask is installed!');
+                    try {
+                        // Request account access if needed
+                        const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+                        const account = accounts[0];
+                        console.log('Connected account:', account);
+                        // Display connected account
+                        document.getElementById('walletAddress').textContent = `Connected: ${account}`;
+                    } catch (error) {
+                        console.error('User rejected the request.');
+                    }
+                } else {
+                    console.error('Please install MetaMask!');
                 }
 
-                const eventCards = document.querySelectorAll('.collection-card');
-
-                eventCards.forEach(card => {
-                    const title = card.querySelector('.collection-name').textContent.toLowerCase();
-                    const description = card.querySelector('.collection-info div:not(.collection-price)').textContent.toLowerCase();
-
-                    if (title.includes(searchTerm) || description.includes(searchTerm)) {
-                        card.style.display = 'block';
-                    } else {
-                        card.style.display = 'none';
+                // Search functionality with revert capability
+                document.querySelector('.search-bar input').addEventListener('keypress', function (e) {
+                    if (e.key === 'Enter') {
+                        performSearch(this.value);
                     }
                 });
 
-                // Show section titles if any results found
-                document.querySelectorAll('[class$="-section"]').forEach(section => {
-                    const hasVisibleCards = Array.from(section.querySelectorAll('.collection-card'))
-                        .some(card => card.style.display !== 'none');
-
-                    section.style.display = hasVisibleCards ? 'block' : 'none';
-                });
-            }
-
-            function revertSearch() {
-                // Show all cards
-                document.querySelectorAll('.collection-card').forEach(card => {
-                    card.style.display = 'block';
+                document.querySelector('.search-icon').addEventListener('click', function () {
+                    const searchValue = document.querySelector('.search-bar input').value;
+                    performSearch(searchValue);
                 });
 
-                // Show all sections
-                document.querySelectorAll('[class$="-section"]').forEach(section => {
-                    section.style.display = 'block';
+                document.querySelector('.search-bar input').addEventListener('input', function (e) {
+                    if (this.value === '') {
+                        revertSearch();
+                    }
                 });
 
-                // Re-apply active category filter
-                const activeCategory = document.querySelector('.category.active');
-                if (activeCategory) {
-                    const target = activeCategory.dataset.target;
-                    document.querySelectorAll('[class$="-section"]').forEach(section => {
-                        if (target === 'all' || section.id === target) {
-                            section.style.display = 'block';
+                function performSearch(query) {
+                    const searchTerm = query.toLowerCase().trim();
+
+                    if (!searchTerm) {
+                        revertSearch();
+                        return;
+                    }
+
+                    const eventCards = document.querySelectorAll('.collection-card');
+
+                    eventCards.forEach(card => {
+                        const title = card.querySelector('.collection-name').textContent.toLowerCase();
+                        const description = card.querySelector('.collection-info div:not(.collection-price)').textContent.toLowerCase();
+
+                        if (title.includes(searchTerm) || description.includes(searchTerm)) {
+                            card.style.display = 'block';
                         } else {
-                            section.style.display = 'none';
+                            card.style.display = 'none';
                         }
                     });
+
+                    // Show section titles if any results found
+                    document.querySelectorAll('[class$="-section"]').forEach(section => {
+                        const hasVisibleCards = Array.from(section.querySelectorAll('.collection-card'))
+                            .some(card => card.style.display !== 'none');
+
+                        section.style.display = hasVisibleCards ? 'block' : 'none';
+                    });
                 }
-            }
+
+                function revertSearch() {
+                    // Show all cards
+                    document.querySelectorAll('.collection-card').forEach(card => {
+                        card.style.display = 'block';
+                    });
+
+                    // Show all sections
+                    document.querySelectorAll('[class$="-section"]').forEach(section => {
+                        section.style.display = 'block';
+                    });
+
+                    // Re-apply active category filter
+                    const activeCategory = document.querySelector('.category.active');
+                    if (activeCategory) {
+                        const target = activeCategory.dataset.target;
+                        document.querySelectorAll('[class$="-section"]').forEach(section => {
+                            if (target === 'all' || section.id === target) {
+                                section.style.display = 'block';
+                            } else {
+                                section.style.display = 'none';
+                            }
+                        });
+                    }
+                }
         </script>
 
         <div class="action-buttons">
-            <button class="btn btn-primary" id="walletConnect" onclick="connectMetaMask()"><span>Connect wallet</span></button>
+            <button class="btn btn-primary" id="walletConnect" onclick="connectMetaMask()"><span>Connect
+                    wallet</span></button>
             <div class="dropdown" style="position: relative; display: inline-block;">
                 <div id="icon-btn" style="cursor: pointer; font-size: 20px; padding: 10px; border-radius: 5px;">👤</div>
                 <div class="dropdown-content"
@@ -1293,16 +1294,17 @@
                 blockchain technology</p>
             <div class="hero-buttons">
                 <button class="btn btn-primary" onclick="scrollToEvents()">Explore Events</button>
-                <a href="https://www.asrock.com/general/TermsPrivacy.asp?cat=NFT#:~:text=To%20the%20extent%20that%20the,to%20the%20license%20and%20restrictions" class="btn btn-outline" >Learn More</a>
+                <a href="https://www.asrock.com/general/TermsPrivacy.asp?cat=NFT#:~:text=To%20the%20extent%20that%20the,to%20the%20license%20and%20restrictions"
+                    class="btn btn-outline">Learn More</a>
             </div>
         </div>
     </div>
     <script>
-        function scrollToEvents() {
-            document.getElementById('eventsSection').scrollIntoView({
-                behavior: 'smooth'
-            });
-        }</script>
+                function scrollToEvents() {
+                    document.getElementById('eventsSection').scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }</script>
     <div class="categories" id="eventsSection">
         <div class="category active" data-target="all">All</div>
         <div class="category" data-target="concerts">Concerts</div>
@@ -1596,31 +1598,31 @@
             <div class="view-all">View All</div>
         </div>
         <script>
-            // Category filtering functionality
-            document.querySelectorAll('.category').forEach(button => {
-                button.addEventListener('click', function () {
-                    // Remove active class from all buttons
-                    document.querySelectorAll('.category').forEach(btn => btn.classList.remove('active'));
+                // Category filtering functionality
+                document.querySelectorAll('.category').forEach(button => {
+                    button.addEventListener('click', function () {
+                        // Remove active class from all buttons
+                        document.querySelectorAll('.category').forEach(btn => btn.classList.remove('active'));
 
-                    // Add active class to clicked button
-                    this.classList.add('active');
+                        // Add active class to clicked button
+                        this.classList.add('active');
 
-                    // Get target section ID
-                    const target = this.dataset.target;
+                        // Get target section ID
+                        const target = this.dataset.target;
 
-                    // Show/hide sections
-                    document.querySelectorAll('[class$="-section"]').forEach(section => {
-                        if (target === 'all' || section.id === target) {
-                            section.style.display = 'block';
-                        } else {
-                            section.style.display = 'none';
-                        }
+                        // Show/hide sections
+                        document.querySelectorAll('[class$="-section"]').forEach(section => {
+                            if (target === 'all' || section.id === target) {
+                                section.style.display = 'block';
+                            } else {
+                                section.style.display = 'none';
+                            }
+                        });
                     });
                 });
-            });
 
-            // Activate All button by default
-            document.querySelector('.category[data-target="all"]').click();
+                // Activate All button by default
+                document.querySelector('.category[data-target="all"]').click();
         </script>
 
         <div class="collections-grid">
@@ -1665,7 +1667,7 @@
                 </div>
             </div>
 
-            <div class="collection-card" onclick="openModal('party1')"> 
+            <div class="collection-card" onclick="openModal('party1')">
                 <img class="collection-image"
                     src="https://www.udayavani.com/wp-content/uploads/2025/01/Beach-Festival1.jpg" alt="Beach Party">
                 <div class="collection-info">
@@ -1891,11 +1893,10 @@
             <div class="modal-body">
                 <p>Choose a wallet to connect to TruePass marketplace:</p>
                 <div class="wallet-options">
-                    <div class="wallet-option">
-                        <img src="logo\metamask.png" alt="MetaMask" class="wallet-icon">
-                        <div class="wallet-name">MetaMask</div>
+                    <div class="wallet-option" id="walletButton" onclick="connectMetaMask()">
+                        <img src="logo/metamask.png" alt="MetaMask" class="wallet-icon">
+                        <div class="wallet-name" id="walletText">MetaMask</div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -1904,122 +1905,176 @@
     <!-- Notification -->
     <div class="notification" id="notification">Item added to cart!</div>
 
+    <style>
+        .wallet-option {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #f3f3f3;
+            /* Default background */
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .wallet-option.connected {
+            background-color: #4CAF50 !important;
+            /* Green background when connected */
+            color: white !important;
+            /* White text */
+            border: 1px solid #3e8e41;
+            /* Darker green border */
+        }
+
+        .wallet-icon {
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+        }
+    </style>
+
     <script>
-        // Event modal functionality
-        function openModal(eventId) {
-            const modal = document.getElementById('eventModal');
-            modal.style.display = 'block';
+            async function connectMetaMask() {
+                const walletText = document.getElementById("walletText");
+                const walletButton = document.getElementById("walletButton");
 
-            // Set event details based on the event ID
-            if (eventId === 'concert1') {
-                document.getElementById('modalTitle').textContent = 'Summer Music Festival 2025';
-                document.getElementById('modalDescription').textContent = 'Experience the ultimate summer music festival featuring top artists and bands from around the world. This exclusive NFT grants you VIP access to all areas.';
-                document.getElementById('modalLocation').textContent = 'Sunshine Park, Miami';
-                document.getElementById('modalDate').textContent = 'April 15, 2025';
-                document.getElementById('modalPrice').textContent = '0.8 ETH';
-                document.getElementById('modalSupply').textContent = '5,000';
-                
+                if (window.ethereum) {
+                    try {
+                        const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+                        console.log("Connected account:", accounts[0]);
 
-            } else if (eventId === 'sports1') {
-                document.getElementById('modalTitle').textContent = 'Championship Finals';
-                document.getElementById('modalDescription').textContent = 'Witness basketball history at the season finale championship game. This NFT ticket includes premium seating and exclusive memorabilia.';
-                document.getElementById('modalLocation').textContent = 'Stadium Arena, Los Angeles';
-                document.getElementById('modalDate').textContent = 'March 20, 2025';
-                document.getElementById('modalPrice').textContent = '1.2 ETH';
-                document.getElementById('modalSupply').textContent = '3,000';
-            } else if (eventId === 'party1') {
-                document.getElementById('modalTitle').textContent = 'Neon Night Party';
-                document.getElementById('modalDescription').textContent = 'The ultimate VIP clubbing experience with world-famous DJs and unlimited premium drinks. This NFT grants you skip-the-line access.';
-                document.getElementById('modalLocation').textContent = 'Skylight Club, New York';
-                document.getElementById('modalDate').textContent = 'April 2, 2025';
-                document.getElementById('modalPrice').textContent = '0.5 ETH';
-                document.getElementById('modalSupply').textContent = '1,000';
-            } else if (eventId === 'exhibition1') {
-                document.getElementById('modalTitle').textContent = 'Digital Art Exhibition';
-                document.getElementById('modalDescription').textContent = 'Explore the future of digital art at this immersive exhibition featuring renowned NFT artists. Your ticket NFT includes a commemorative digital collectible.';
-                document.getElementById('modalLocation').textContent = 'Modern Gallery, San Francisco';
-                document.getElementById('modalDate').textContent = 'May 10, 2025';
-                document.getElementById('modalPrice').textContent = '0.3 ETH';
-                document.getElementById('modalSupply').textContent = '2,500';
-            }
+                        // Shorten the wallet address for display
+                        const shortAddress = accounts[0].slice(0, 6) + "..." + accounts[0].slice(-4);
+                        walletText.innerText = shortAddress;
 
-            // Set countdown
-            startCountdown();
-        }
+                        // Apply the connected styles
+                        walletButton.classList.add("connected");
 
-        function closeModal() {
-            document.getElementById('eventModal').style.display = 'none';
-        }
+                        // Prevent further clicks after connection
+                        walletButton.onclick = null;
 
-        // Wallet modal
-        document.getElementById('walletConnect').addEventListener('click', function () {
-            document.getElementById('walletModal').style.display = 'block';
-        });
-
-        function closeWalletModal() {
-            document.getElementById('walletModal').style.display = 'none';
-        }
-
-        // Cart notification
-        document.getElementById('cartButton').addEventListener('click', function () {
-            const notification = document.getElementById('notification');
-            notification.classList.add('show');
-
-            setTimeout(function () {
-                notification.classList.remove('show');
-            }, 3000);
-        });
-
-        // Close modals when clicking outside
-        window.onclick = function (event) {
-            const eventModal = document.getElementById('eventModal');
-            const walletModal = document.getElementById('walletModal');
-
-            if (event.target === eventModal) {
-                eventModal.style.display = 'none';
-            }
-
-            if (event.target === walletModal) {
-                walletModal.style.display = 'none';
-            }
-        }
-
-        // Countdown functionality
-        function startCountdown() {
-            // Set the date for the countdown (example: 15 days from now)
-            const countDownDate = new Date();
-            countDownDate.setDate(countDownDate.getDate() + 15);
-
-            // Update the countdown every 1 second
-            const x = setInterval(function () {
-                const now = new Date().getTime();
-                const distance = countDownDate - now;
-
-                // Calculate days, hours, minutes and seconds
-                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-                // Display the result
-                document.getElementById("days").innerHTML = days < 10 ? "0" + days : days;
-                document.getElementById("hours").innerHTML = hours < 10 ? "0" + hours : hours;
-                document.getElementById("minutes").innerHTML = minutes < 10 ? "0" + minutes : minutes;
-                document.getElementById("seconds").innerHTML = seconds < 10 ? "0" + seconds : seconds;
-
-                // If the countdown is finished, clear the interval
-                if (distance < 0) {
-                    clearInterval(x);
-                    document.getElementById("days").innerHTML = "00";
-                    document.getElementById("hours").innerHTML = "00";
-                    document.getElementById("minutes").innerHTML = "00";
-                    document.getElementById("seconds").innerHTML = "00";
+                    } catch (error) {
+                        console.error("User denied account access", error);
+                    }
+                } else {
+                    alert("MetaMask is not installed. Please install it to use this feature.");
                 }
-            }, 1000);
-        }
+            }
+            // Event modal functionality
+            function openModal(eventId) {
+                const modal = document.getElementById('eventModal');
+                modal.style.display = 'block';
+
+                // Set event details based on the event ID
+                if (eventId === 'concert1') {
+                    document.getElementById('modalTitle').textContent = 'Summer Music Festival 2025';
+                    document.getElementById('modalDescription').textContent = 'Experience the ultimate summer music festival featuring top artists and bands from around the world. This exclusive NFT grants you VIP access to all areas.';
+                    document.getElementById('modalLocation').textContent = 'Sunshine Park, Miami';
+                    document.getElementById('modalDate').textContent = 'April 15, 2025';
+                    document.getElementById('modalPrice').textContent = '0.8 ETH';
+                    document.getElementById('modalSupply').textContent = '5,000';
+
+
+                } else if (eventId === 'sports1') {
+                    document.getElementById('modalTitle').textContent = 'Championship Finals';
+                    document.getElementById('modalDescription').textContent = 'Witness basketball history at the season finale championship game. This NFT ticket includes premium seating and exclusive memorabilia.';
+                    document.getElementById('modalLocation').textContent = 'Stadium Arena, Los Angeles';
+                    document.getElementById('modalDate').textContent = 'March 20, 2025';
+                    document.getElementById('modalPrice').textContent = '1.2 ETH';
+                    document.getElementById('modalSupply').textContent = '3,000';
+                } else if (eventId === 'party1') {
+                    document.getElementById('modalTitle').textContent = 'Neon Night Party';
+                    document.getElementById('modalDescription').textContent = 'The ultimate VIP clubbing experience with world-famous DJs and unlimited premium drinks. This NFT grants you skip-the-line access.';
+                    document.getElementById('modalLocation').textContent = 'Skylight Club, New York';
+                    document.getElementById('modalDate').textContent = 'April 2, 2025';
+                    document.getElementById('modalPrice').textContent = '0.5 ETH';
+                    document.getElementById('modalSupply').textContent = '1,000';
+                } else if (eventId === 'exhibition1') {
+                    document.getElementById('modalTitle').textContent = 'Digital Art Exhibition';
+                    document.getElementById('modalDescription').textContent = 'Explore the future of digital art at this immersive exhibition featuring renowned NFT artists. Your ticket NFT includes a commemorative digital collectible.';
+                    document.getElementById('modalLocation').textContent = 'Modern Gallery, San Francisco';
+                    document.getElementById('modalDate').textContent = 'May 10, 2025';
+                    document.getElementById('modalPrice').textContent = '0.3 ETH';
+                    document.getElementById('modalSupply').textContent = '2,500';
+                }
+
+                // Set countdown
+                startCountdown();
+            }
+
+            function closeModal() {
+                document.getElementById('eventModal').style.display = 'none';
+            }
+
+            // Wallet modal
+            document.getElementById('walletConnect').addEventListener('click', function () {
+                document.getElementById('walletModal').style.display = 'block';
+            });
+
+            function closeWalletModal() {
+                document.getElementById('walletModal').style.display = 'none';
+            }
+
+            // Cart notification
+            document.getElementById('cartButton').addEventListener('click', function () {
+                const notification = document.getElementById('notification');
+                notification.classList.add('show');
+
+                setTimeout(function () {
+                    notification.classList.remove('show');
+                }, 3000);
+            });
+
+            // Close modals when clicking outside
+            window.onclick = function (event) {
+                const eventModal = document.getElementById('eventModal');
+                const walletModal = document.getElementById('walletModal');
+
+                if (event.target === eventModal) {
+                    eventModal.style.display = 'none';
+                }
+
+                if (event.target === walletModal) {
+                    walletModal.style.display = 'none';
+                }
+            }
+
+            // Countdown functionality
+            function startCountdown() {
+                // Set the date for the countdown (example: 15 days from now)
+                const countDownDate = new Date();
+                countDownDate.setDate(countDownDate.getDate() + 15);
+
+                // Update the countdown every 1 second
+                const x = setInterval(function () {
+                    const now = new Date().getTime();
+                    const distance = countDownDate - now;
+
+                    // Calculate days, hours, minutes and seconds
+                    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                    // Display the result
+                    document.getElementById("days").innerHTML = days < 10 ? "0" + days : days;
+                    document.getElementById("hours").innerHTML = hours < 10 ? "0" + hours : hours;
+                    document.getElementById("minutes").innerHTML = minutes < 10 ? "0" + minutes : minutes;
+                    document.getElementById("seconds").innerHTML = seconds < 10 ? "0" + seconds : seconds;
+
+                    // If the countdown is finished, clear the interval
+                    if (distance < 0) {
+                        clearInterval(x);
+                        document.getElementById("days").innerHTML = "00";
+                        document.getElementById("hours").innerHTML = "00";
+                        document.getElementById("minutes").innerHTML = "00";
+                        document.getElementById("seconds").innerHTML = "00";
+                    }
+                }, 1000);
+            }
     </script>
     <script src="https://cdn.botpress.cloud/webchat/v2.2/inject.js"></script>
     <script src="https://files.bpcontent.cloud/2025/03/09/14/20250309140752-2BXBGDP5.js"></script>
 </body>
- 
-</html> 
+
+</html>
